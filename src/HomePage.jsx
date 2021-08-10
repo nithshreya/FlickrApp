@@ -19,7 +19,7 @@ function getConfig(text, page) {
   }
 
 
-  
+
 
   return {
     method: "get",
@@ -101,7 +101,7 @@ class HomePage extends Component {
           this.addTextToRecentSearch(text);
           this.setState({
             results:
-              page == 1
+              page === 1
                 ? response.data.photos.photo
                 : [...this.state.results, ...response.data.photos.photo],
             pages: response.data.photos.pages,
@@ -165,14 +165,14 @@ class HomePage extends Component {
           <span class="input-group-addon fa fa-search" id="basic-addon2"></span>
 
           <datalist id="browsers">
-            {this.state.recentSearch.getElements().map((text, i) => {
+            {recentSearch.getElements().map((text, i) => {
               return <option value={text} key={i} />;
             })}
           </datalist>
         </div>
         <div className="Column">
           <InfiniteScroll
-            dataLength={this.state.results.length} //This is important field to render the next data
+            dataLength={results.length} //This is important field to render the next data
             next={this.fetchMoreData}
             hasMore={page < pages}
             loader={<h4>Loading...</h4>}
@@ -185,6 +185,7 @@ class HomePage extends Component {
             {this.state.results.map((photo, i) => {
               return (
                 <img
+                alt={photo.id}
                   key={i}
                   className="profile-pic"
                   onClick={() => this.handleShowDialog(photo)}
@@ -197,10 +198,9 @@ class HomePage extends Component {
         {this.state.isOpen && (
           <dialog className="dialog" open onClick={this.handleShowDialog}>
             <img
-              className="image"
               src={`https://live.staticflickr.com/${this.state.photoDialog.server}/${this.state.photoDialog.id}_${this.state.photoDialog.secret}_w.jpg`}
               onClick={this.handleShowDialog}
-              alt="no image"
+              alt={this.state.photoDialog.id}
             />
           </dialog>
         )}
