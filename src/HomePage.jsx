@@ -18,6 +18,9 @@ function getConfig(text, page) {
     url = `${BASE_URL}page=${page}&format=json&nojsoncallback=1`;
   }
 
+
+  
+
   return {
     method: "get",
     url,
