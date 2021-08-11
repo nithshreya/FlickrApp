@@ -18,9 +18,6 @@ function getConfig(text, page) {
     url = `${BASE_URL}page=${page}&format=json&nojsoncallback=1`;
   }
 
-
-
-
   return {
     method: "get",
     url,
@@ -46,8 +43,6 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    // this.setState({page:1})
-    // this.getRecent(this.page);
     this.getSearchedImage(this.state.text, 1)();
     console.log(this.state.recentSearch.getElements());
   }
@@ -72,7 +67,7 @@ class HomePage extends Component {
       clearTimeout(this.timeout);
     }
 
-    this.timeout = setTimeout(this.getSearchedImage(text, 1), 2000);
+    this.timeout = setTimeout(this.getSearchedImage(text, 1), 1000);
   };
 
   getSearchedImage = (text, page, isFirstCall = true) => {
@@ -80,8 +75,13 @@ class HomePage extends Component {
       if (isFirstCall) {
         window.scrollTo(0, 0);
         this.setState({ page: 1 });
+        if (text) {
+          this.setState({keyword: text });
+        } else {
+          this.setState({keyword: "" });
+        }
       }
-      const config = getConfig(text, page);
+      const config = getConfig(this.state.keyword, page);
       console.log(config);
       axios(config)
         .then((response) => {
@@ -96,8 +96,7 @@ class HomePage extends Component {
             notify();
             return;
           }
-          // window.scrollTo(0, 0);
-          // this.setState({ page: 1 });
+          console.log(config.url);
           this.addTextToRecentSearch(text);
           this.setState({
             results:
@@ -157,7 +156,7 @@ class HomePage extends Component {
             list="browsers"
             type="search"
             name="search"
-            id="photo-search"
+            className="photo-search"
             placeholder="Search..."
             onInput={this.getData}
             autoComplete="off"
@@ -185,7 +184,7 @@ class HomePage extends Component {
             {this.state.results.map((photo, i) => {
               return (
                 <img
-                alt={photo.id}
+                  alt={photo.id}
                   key={i}
                   className="profile-pic"
                   onClick={() => this.handleShowDialog(photo)}

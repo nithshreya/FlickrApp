@@ -6,6 +6,9 @@ var Queue = function (array = [], maxSize = 5) {
 };
 
 Queue.prototype.enqueue = function (data) {
+  if (this.elements.includes(data)) {
+    return;
+  }
   this.elements.push(data);
   if (this.elements.length > 5) {
     this.elements.shift();
@@ -17,7 +20,7 @@ Queue.prototype.dequeue = function () {
 };
 
 Queue.prototype.getElements = function () {
-  return this.elements.filter(i => i)
+  return this.elements.filter((i) => i);
 };
 
 export default Queue;
